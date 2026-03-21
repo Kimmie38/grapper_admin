@@ -9,18 +9,21 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@auth/core": "^0.34",
+    "@neondatabase/serverless": "^0.10.4",
+    "@react-aria/button": "^3",
+    "@tanstack/react-query": "^5",
+    "clean-stack": "^4",
+    "date-fns": "^3",
+    "html-to-image": "^1",
+    "lucide-react": "^0",
+    "motion": "^11",
     "next": "16.2.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "@tanstack/react-query": "^5",
-    "@react-aria/button": "^3",
-    "html-to-image": "^1",
+    "recharts": "^2",
     "serialize-error": "^11",
-    "clean-stack": "^4",
-    "sonner": "^1",
-    "motion": "^11",
-    "lucide-react": "^0",
-    "@auth/core": "^0.34"
+    "sonner": "^1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

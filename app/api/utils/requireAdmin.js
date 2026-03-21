@@ -1,5 +1,5 @@
-import sql from "@/app/api/utils/sql";
-import { getSession } from "@/app/api/utils/getSession";
+import sql from "@/api/utils/sql";
+import { getSession } from "@/api/utils/getSession";
 
 function normalizeUserId(raw) {
   const n = typeof raw === "string" ? Number.parseInt(raw, 10) : Number(raw);

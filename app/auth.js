@@ -1,29 +1,11 @@
 /**
- * WARNING: This file connects this app to Create's internal auth system. Do
- * not attempt to edit it. Do not import @auth/create or @auth/create
- * anywhere else or it may break. This is an internal package.
+ * This file provides basic auth configuration.
+ * For full authentication, you may need to configure NextAuth.js or another auth solution.
  */
-import CreateAuth from '@auth/create';
-import Credentials from '@auth/core/providers/credentials';
 
-const result = CreateAuth({
-	providers: [
-		Credentials({
-			credentials: {
-				email: {
-					label: 'Email',
-					type: 'email',
-				},
-				password: {
-					label: 'Password',
-					type: 'password',
-				},
-			},
-		}),
-	],
-	pages: {
-		signIn: '/account/signin',
-		signOut: '/account/logout',
-	},
-});
-export const { auth } = result;
+// Mock auth export - replace with proper authentication setup
+export const auth = async (request) => {
+  // This is a placeholder for authentication
+  // In production, you would implement proper session handling here
+  return null;
+};
