@@ -1,8 +1,9 @@
-import { useSession } from '@auth/create/react';
 import React from 'react';
 
 export const useUser = () => {
-	const { data: session, status } = useSession();
+	// Mock session for now - replace with real auth integration if needed
+	const session = null;
+	const status = 'unauthenticated';
 	const id = session?.user?.id;
 
 	const [user, setUser] = React.useState(session?.user ?? null);
