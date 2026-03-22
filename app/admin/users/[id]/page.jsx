@@ -1,7 +1,44 @@
+"use client";
+
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Toaster, toast } from "sonner";
 import { ArrowLeft, Ban, CheckCircle, RefreshCw, Trash2 } from "lucide-react";
+
+const mockUserData = {
+  user_001: {
+    profile: {
+      full_name: "John Doe",
+      email: "john.doe@example.com",
+      university: "Stanford University",
+      status: "active",
+      account_type: "user",
+      avatar_url: null,
+      bio: "Passionate learner and tutor specializing in mathematics.",
+    },
+    posts: [
+      {
+        id: "post_001",
+        content: "Need help with calculus homework",
+        likes_count: 5,
+        comments_count: 3,
+        created_at: "2024-01-21T14:30:00Z",
+        image_url: null,
+        video_url: null,
+        audio_url: null,
+      },
+    ],
+    comments: [
+      {
+        id: "comment_001",
+        content: "I think this approach is correct",
+        post_content: "Need help with calculus...",
+        created_at: "2024-01-21T15:00:00Z",
+      },
+    ],
+    reports: [],
+  },
+};
 
 export default function AdminUserDetailPage({ params }) {
   const { id } = params;
@@ -10,45 +47,52 @@ export default function AdminUserDetailPage({ params }) {
   const userQuery = useQuery({
     queryKey: ["admin", "user", id],
     queryFn: async () => {
-      const res = await fetch(`/api/admin/users/${id}`);
-      if (!res.ok) throw new Error("Failed to load user details");
-      return res.json();
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      return mockUserData[id] || {
+        profile: {
+          full_name: "Unknown User",
+          email: "user@example.com",
+          university: "Unknown",
+          status: "active",
+          account_type: "user",
+          avatar_url: null,
+          bio: null,
+        },
+        posts: [],
+        comments: [],
+        reports: [],
+      };
     },
   });
 
   const actionMutation = useMutation({
     mutationFn: async ({ action, ...data }) => {
-      const res = await fetch(`/api/admin/users/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action, ...data }),
-      });
-      if (!res.ok) throw new Error("Action failed");
-      return res.json();
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      return { success: true, action };
     },
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries(["admin", "user", id]);
+      queryClient.invalidateQueries({ queryKey: ["admin", "user", id] });
       toast.success(`Action '${variables.action}' successful`);
     },
     onError: (err) => {
-      toast.error(err.message);
+      toast.error(err.message || "Action failed");
     },
   });
 
   const deletePostMutation = useMutation({
     mutationFn: async (postId) => {
-      const res = await fetch(`/api/admin/posts/${postId}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Failed to delete post");
-      return res.json();
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      return { success: true, postId };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin", "user", id]);
+      queryClient.invalidateQueries({ queryKey: ["admin", "user", id] });
       toast.success("Post deleted");
     },
     onError: (err) => {
-      toast.error(err.message);
+      toast.error(err.message || "Failed to delete post");
     },
   });
 

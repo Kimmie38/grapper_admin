@@ -45,6 +45,11 @@ const mockOverviewData = {
   ],
   revenue: {
     total: 125450.50,
+    gmv: 425230.75,
+    totalCommissions: 125450.50,
+    paidCommissions: 110000.00,
+    pendingCommissions: 15450.50,
+    avgTransactionValue: 98.75,
     growth: 12.5,
     trends: [
       { month: "Jan", revenue: 45000 },
@@ -61,26 +66,33 @@ const mockOverviewData = {
   },
   bookings: {
     total: 3421,
-    completed: 2980,
-    pending: 341,
-    cancelled: 100,
+    completionRate: 87,
+    cancellationRate: 3,
+    byStatus: {
+      completed: 2980,
+      confirmed: 250,
+      inProgress: 91,
+      pending: 0,
+      cancelled: 100,
+    },
     trends: [
       { month: "Jan", bookings: 450 },
       { month: "Feb", bookings: 520 },
       { month: "Mar", bookings: 580 },
       { month: "Apr", bookings: 871 },
     ],
-    byStatus: [
-      { status: "Completed", count: 2980 },
-      { status: "Pending", count: 341 },
-      { status: "Cancelled", count: 100 },
-    ],
   },
   providers: {
     total: 892,
     active: 756,
     inactive: 136,
+    verified: 743,
     avgRating: 4.6,
+    services: {
+      total: 2145,
+      featured: 234,
+      avgPrice: 75.50,
+    },
     topPerformers: [
       { id: 1, name: "John Smith", servicesCount: 45, rating: 4.9, bookings: 234 },
       { id: 2, name: "Sarah Johnson", servicesCount: 38, rating: 4.8, bookings: 198 },
@@ -94,9 +106,10 @@ const mockOverviewData = {
     ],
   },
   payments: {
-    total: 125450.50,
+    total: 3421,
     successful: 3401,
     failed: 20,
+    successRate: 99.4,
     byMethod: [
       { method: "Card", amount: 75000, percentage: 59.7 },
       { method: "PayStack", amount: 35000, percentage: 27.9 },
@@ -104,6 +117,11 @@ const mockOverviewData = {
     ],
   },
   engagement: {
+    dau: 8945,
+    mau: 12450,
+    totalUsers: 45230,
+    userGrowthRate: 12.5,
+    repeatBookingRate: 65.3,
     newSignups: 342,
     activeUsers: 8945,
     retentionRate: 78.5,
@@ -121,6 +139,9 @@ const mockOverviewData = {
   marketplace: {
     health: 92,
     qualityScore: 8.7,
+    avgRating: 4.6,
+    totalReviews: 12450,
+    customerSatisfaction: 87.5,
     userSatisfaction: 4.6,
     responseTime: 4.2,
   },
