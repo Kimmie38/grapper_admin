@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -12,6 +14,54 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+const mockReports = [
+  {
+    id: "report_001",
+    reporter_id: "user_001",
+    reporter_name: "John Doe",
+    reporter_avatar: null,
+    target_id: "user_003",
+    target_type: "user",
+    reason: "Inappropriate language and harassment in comments",
+    status: "pending",
+    created_at: "2024-01-21T10:30:00Z",
+    claimed_at: null,
+    claimed_by_name: null,
+    resolved_at: null,
+    resolved_by_name: null,
+  },
+  {
+    id: "report_002",
+    reporter_id: "user_002",
+    reporter_name: "Jane Smith",
+    reporter_avatar: null,
+    target_id: "post_003",
+    target_type: "post",
+    reason: "Spam and promotional content not allowed on platform",
+    status: "claimed",
+    created_at: "2024-01-20T14:15:00Z",
+    claimed_at: "2024-01-21T09:00:00Z",
+    claimed_by_name: "Moderator Admin",
+    resolved_at: null,
+    resolved_by_name: null,
+  },
+  {
+    id: "report_003",
+    reporter_id: "user_004",
+    reporter_name: "Mike Johnson",
+    reporter_avatar: null,
+    target_id: "user_005",
+    target_type: "user",
+    reason: "Suspicious booking patterns and potential fraud",
+    status: "resolved",
+    created_at: "2024-01-19T12:45:00Z",
+    claimed_at: "2024-01-19T13:00:00Z",
+    claimed_by_name: "Moderator Admin",
+    resolved_at: "2024-01-19T15:30:00Z",
+    resolved_by_name: "Moderator Admin",
+  },
+];
+
 export default function AdminReportsPage() {
   const [statusFilter, setStatusFilter] = useState("all");
   const queryClient = useQueryClient();
@@ -19,28 +69,29 @@ export default function AdminReportsPage() {
   const { data: reports = [], isLoading } = useQuery({
     queryKey: ["admin-reports", statusFilter],
     queryFn: async () => {
-      const res = await fetch(`/api/admin/reports?status=${statusFilter}`);
-      if (!res.ok) throw new Error("Failed to fetch reports");
-      return res.json();
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      if (statusFilter === "all") {
+        return mockReports;
+      }
+
+      return mockReports.filter((report) => report.status === statusFilter);
     },
   });
 
   const updateStatusMutation = useMutation({
     mutationFn: async ({ id, status }) => {
-      const res = await fetch(`/api/admin/reports/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
-      });
-      if (!res.ok) throw new Error("Failed to update report");
-      return res.json();
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      return { success: true, id, status };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["admin-reports"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-reports"] });
       toast.success("Report updated successfully");
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(error.message || "Failed to update report");
     },
   });
 

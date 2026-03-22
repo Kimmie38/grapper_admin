@@ -5,17 +5,10 @@ export function useUnflagMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ profileId, reason }) => {
-      const res = await fetch(`/api/admin/flagged/${profileId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "active", reason }),
-      });
-      if (!res.ok) {
-        const payload = await res.json().catch(() => ({}));
-        throw new Error(payload.error || "Failed to unflag account");
-      }
-      return res.json();
+    mutationFn: async (profileId) => {
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      return { success: true, profileId };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "flagged"] });
@@ -23,7 +16,7 @@ export function useUnflagMutation() {
       toast.success("Account unflagged successfully");
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(error.message || "Failed to unflag account");
     },
   });
 }
@@ -33,18 +26,17 @@ export function useRecountMutation() {
 
   return useMutation({
     mutationFn: async () => {
-      const res = await fetch("/api/admin/maintenance/recount", {
-        method: "POST",
-      });
-      if (!res.ok) {
-        const payload = await res.json().catch(() => ({}));
-        throw new Error(payload.error || "Failed to run maintenance");
-      }
-      return res.json();
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      return { success: true, message: "Recount completed" };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "overview"] });
       queryClient.invalidateQueries({ queryKey: ["admin", "posts"] });
+      toast.success("Maintenance recount completed");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to run maintenance");
     },
   });
 }
@@ -54,16 +46,9 @@ export function useUpdateBookingStatusMutation() {
 
   return useMutation({
     mutationFn: async ({ bookingId, status }) => {
-      const res = await fetch(`/api/admin/bookings/${bookingId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
-      });
-      if (!res.ok) {
-        const payload = await res.json().catch(() => ({}));
-        throw new Error(payload.error || "Failed to update booking status");
-      }
-      return res.json();
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      return { success: true, bookingId, status };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "bookings"] });
@@ -71,7 +56,7 @@ export function useUpdateBookingStatusMutation() {
       toast.success("Booking status updated");
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(error.message || "Failed to update booking status");
     },
   });
 }

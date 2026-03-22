@@ -25,15 +25,27 @@ export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
+  const mockSearchResults = [
+    { id: "1", type: "profile", title: "John Doe", subtitle: "Tutoring Provider", image_url: null },
+    { id: "2", type: "service", title: "Math Tutoring", subtitle: "Expert tutoring in mathematics", image_url: null },
+    { id: "3", type: "post", title: "Need help with calculus", subtitle: "Looking for calculus homework help", image_url: null },
+    { id: "4", type: "topic", title: "#tutoring", subtitle: "Browse tutoring related posts", image_url: null },
+    { id: "5", type: "category", title: "Academic Services", subtitle: "All tutoring and academic help", image_url: null },
+  ];
+
   const { data: results, isLoading } = useQuery({
     queryKey: ["global-search", debouncedSearchTerm],
     queryFn: async () => {
       if (debouncedSearchTerm.length < 2) return [];
-      const res = await fetch(
-        `/api/search/global?q=${encodeURIComponent(debouncedSearchTerm)}`,
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const searchLower = debouncedSearchTerm.toLowerCase();
+      return mockSearchResults.filter(
+        (item) =>
+          item.title.toLowerCase().includes(searchLower) ||
+          (item.subtitle && item.subtitle.toLowerCase().includes(searchLower))
       );
-      if (!res.ok) throw new Error("Search failed");
-      return res.json();
     },
     enabled: debouncedSearchTerm.length >= 2,
   });
